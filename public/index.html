@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>SURPRISE! 🎉</title>
+    <meta name="description" content="A little surprise, wrapped in confetti." />
+    <meta name="theme-color" content="#0d0b1e" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/surprise.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="orbs" aria-hidden="true">
+      <span class="orb orb-1"></span>
+      <span class="orb orb-2"></span>
+      <span class="orb orb-3"></span>
+    </div>
+    <canvas id="confetti" aria-hidden="true"></canvas>
+
+    <header class="site-header shell">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">✦</span>
+        <span>view-info</span>
+      </a>
+    </header>
+
+    <main id="main" class="surprise shell">
+      <section class="hero glass reveal" aria-labelledby="hero-title">
+        <h1 id="hero-title" class="hero-title">SURPRISE! 🎉</h1>
+      </section>
+    </main>
+
+    <!-- Privacy notice: the site records lightweight visit analytics. -->
+    <aside id="privacy-banner" class="privacy-banner glass" role="region" aria-label="Privacy notice">
+      <p>
+        <strong>Privacy notice:</strong> this site records lightweight visit analytics —
+        timestamp (UTC), IP address, approximate location from your network, browser,
+        operating system, device category, and referrer, used only for the owner's
+        dashboard and kept for a limited retention window.
+        <strong>No GPS</strong> unless you explicitly allow it in your browser's
+        location prompt, and <strong>no personal data</strong> such as contacts,
+        messages, or photos is ever accessed.
+      </p>
+      <div class="privacy-actions">
+        <button id="privacy-accept" class="btn btn-sm" type="button">Got it</button>
+      </div>
+    </aside>
+
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="false"></div>
+
+    <script src="/assets/js/confetti.js" defer></script>
+    <script src="/assets/js/surprise.js" defer></script>
+  </body>
+</html>

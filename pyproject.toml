@@ -1,0 +1,31 @@
+[project]
+name = "view-info"
+version = "1.0.0"
+description = "Surprise landing page with privacy-conscious visitor analytics and an admin dashboard, backed by JSONBin.io and deployable on Vercel."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115,<1.0",
+    "uvicorn>=0.30,<1.0",
+    "httpx>=0.27,<1.0",
+    "itsdangerous>=2.1,<3.0",
+    "bcrypt>=4.2,<5.0",
+    "python-dotenv>=1.0,<2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.vercel]
+# Tells the Vercel Python runtime to load the FastAPI instance named `app`
+# from main.py at the project root.
+entrypoint = "main:app"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]

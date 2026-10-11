@@ -1,0 +1,95 @@
+/* Public surprise page */
+
+main.surprise {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  padding: 1rem 0 3rem;
+  min-height: calc(100vh - 140px);
+}
+
+.hero {
+  width: 100%;
+  text-align: center;
+  padding: clamp(2.5rem, 9vw, 6rem) clamp(1.25rem, 5vw, 3rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -45% -20% auto;
+  height: 90%;
+  background: radial-gradient(closest-side, rgba(139, 92, 246, 0.3), transparent 70%);
+  pointer-events: none;
+}
+
+.hero-title {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 13vw, 7rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0;
+  color: #e9e3ff;
+  text-shadow: 0 20px 60px rgba(139, 92, 246, 0.25);
+}
+
+.hero-title .letter {
+  display: inline-block;
+  /* Each letter clips its own slice of the gradient (aligned in JS), because
+     background-clip:text on the parent does not cover inline-block children. */
+  background-image: linear-gradient(120deg, #f5d0fe 0%, #a78bfa 35%, #f0abfc 60%, #67e8f9 100%);
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: letter-pop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes letter-pop {
+  from {
+    opacity: 0;
+    transform: translateY(0.5em) rotate(-6deg) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0) scale(1);
+  }
+}
+
+.hero-title .hero-emoji {
+  /* Keep the emoji in its native colors: never clip or fill it. */
+  background-image: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: currentColor;
+  animation: emoji-bounce 2.6s ease-in-out infinite;
+}
+
+.hero-emoji {
+  display: inline-block;
+  animation: emoji-bounce 2.6s ease-in-out infinite;
+}
+
+@keyframes emoji-bounce {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  30% {
+    transform: translateY(-0.12em) rotate(-8deg);
+  }
+  55% {
+    transform: translateY(0.04em) rotate(6deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-title .letter,
+  .hero-emoji {
+    animation: none;
+  }
+}

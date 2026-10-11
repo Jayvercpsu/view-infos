@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Admin · view-info</title>
+    <meta name="theme-color" content="#0d0b1e" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/admin.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="orbs" aria-hidden="true">
+      <span class="orb orb-1"></span>
+      <span class="orb orb-2"></span>
+      <span class="orb orb-3"></span>
+    </div>
+
+    <!-- 1) Boot: check the session before deciding what to show -->
+    <div id="boot-view" class="boot-wrap" role="status" aria-live="polite">
+      <span class="spinner spinner-lg" aria-hidden="true"></span>
+      <p>Checking session…</p>
+    </div>
+
+    <!-- 2) Login: only when signed out -->
+    <section id="login-view" class="login-wrap" hidden aria-labelledby="login-title">
+      <div class="login-card glass reveal">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">✦</span>
+          <span>view-info</span>
+        </a>
+        <span class="badge badge-accent">Protected</span>
+        <h1 id="login-title">Admin access</h1>
+        <p class="lede">Password-only sign-in. Sessions are signed server-side and stored in an HttpOnly cookie.</p>
+
+        <p id="form-status" class="form-status" role="alert" aria-live="polite"></p>
+
+        <form id="login-form" novalidate>
+          <div class="field">
+            <label for="admin-password">Admin password</label>
+            <input
+              id="admin-password"
+              class="input"
+              type="password"
+              name="password"
+              autocomplete="current-password"
+              required
+              maxlength="1024"
+              placeholder="••••••••"
+              aria-describedby="login-hint"
+            />
+          </div>
+          <button id="login-btn" class="btn btn-block" type="submit">Sign in</button>
+        </form>
+
+        <p id="login-hint" class="login-hint">
+          Password comes from <code>ADMIN_PASSWORD_HASH</code> on the server and is
+          never sent to the browser.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3) Dashboard: app shell with sidebar, only when signed in -->
+    <section id="dashboard-view" class="app" hidden>
+      <div id="sidebar-overlay" class="sidebar-overlay" hidden></div>
+
+      <aside id="sidebar" class="sidebar" aria-label="Dashboard navigation">
+        <a class="brand sidebar-brand" href="/">
+          <span class="brand-mark" aria-hidden="true">✦</span>
+          <span>view-info</span>
+        </a>
+
+        <p class="side-label">Analytics</p>
+        <nav class="side-nav">
+          <a href="#overview" class="side-link" data-section="overview">
+            <span aria-hidden="true">▦</span> Overview
+          </a>
+          <a href="#visitors" class="side-link" data-section="visitors">
+            <span aria-hidden="true">☰</span> Visitors
+          </a>
+        </nav>
+
+        <div class="side-footer">
+          <span class="side-status"><span class="dot" aria-hidden="true"></span> Signed in</span>
+          <button id="logout-btn" class="btn btn-ghost btn-sm" type="button">Sign out</button>
+        </div>
+      </aside>
+
+      <div class="app-main">
+        <header class="app-topbar">
+          <button
+            id="menu-btn"
+            class="icon-btn"
+            type="button"
+            aria-label="Open navigation"
+            aria-controls="sidebar"
+            aria-expanded="false"
+          >
+            ☰
+          </button>
+          <div class="topbar-title">
+            <h1>Visitor analytics</h1>
+            <p class="sub" id="retention-note">Loading…</p>
+          </div>
+          <div class="dash-actions">
+            <button id="refresh-btn" class="btn btn-secondary btn-sm" type="button">↻ Refresh</button>
+          </div>
+        </header>
+
+        <main id="main" class="app-content">
+          <section id="overview" class="content-section" aria-label="Overview">
+            <div class="stat-grid reveal reveal-1">
+              <article class="stat-card">
+                <div class="label">Total visits</div>
+                <div class="value" id="stat-total">—</div>
+              </article>
+              <article class="stat-card">
+                <div class="label">Today (UTC)</div>
+                <div class="value" id="stat-today">—</div>
+              </article>
+              <article class="stat-card">
+                <div class="label">Last 7 days</div>
+                <div class="value" id="stat-week">—</div>
+              </article>
+              <article class="stat-card">
+                <div class="label">Countries</div>
+                <div class="value" id="stat-countries">—</div>
+              </article>
+            </div>
+
+            <div class="panel-grid reveal reveal-2">
+              <section class="panel" aria-labelledby="devices-title">
+                <h2 id="devices-title">Devices</h2>
+                <ul id="device-bars" class="bar-list"></ul>
+              </section>
+              <section class="panel" aria-labelledby="browsers-title">
+                <h2 id="browsers-title">Browsers</h2>
+                <ul id="browser-bars" class="bar-list"></ul>
+              </section>
+              <section class="panel" aria-labelledby="countries-title">
+                <h2 id="countries-title">Approx. locations</h2>
+                <ul id="country-bars" class="bar-list"></ul>
+              </section>
+            </div>
+          </section>
+
+          <section id="visitors" class="content-section" aria-labelledby="table-title">
+            <div class="table-panel reveal reveal-3">
+              <div class="table-toolbar">
+                <h2 id="table-title">Recent visits</h2>
+                <div class="filters">
+                  <div class="field">
+                    <label for="filter-device">Device</label>
+                    <select id="filter-device" class="input">
+                      <option value="">All</option>
+                      <option value="mobile">Mobile</option>
+                      <option value="tablet">Tablet</option>
+                      <option value="desktop">Desktop</option>
+                      <option value="unknown">Unknown</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="filter-country">Country code</label>
+                    <input id="filter-country" class="input" type="text" maxlength="8" placeholder="e.g. US" />
+                  </div>
+                  <div class="field">
+                    <label for="page-size">Per page</label>
+                    <select id="page-size" class="input">
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="50">50</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div id="table-state" class="table-state" aria-live="polite" aria-busy="true"></div>
+
+              <div id="table-scroll" class="table-scroll" hidden>
+                <table class="visitors">
+                  <caption class="visually-hidden">Visitor records</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Time (UTC)</th>
+                      <th scope="col">Device</th>
+                      <th scope="col">Browser</th>
+                      <th scope="col">OS</th>
+                      <th scope="col">Approx. location</th>
+                      <th scope="col">IP</th>
+                      <th scope="col">Referrer</th>
+                      <th scope="col"><span class="visually-hidden">Actions</span></th>
+                    </tr>
+                  </thead>
+                  <tbody id="visitor-rows"></tbody>
+                </table>
+              </div>
+
+              <div id="empty-state" class="table-state" hidden>
+                <p><strong>No visits yet.</strong></p>
+                <p>When people open the surprise page, their (privacy-disclosed) visits will appear here.</p>
+              </div>
+
+              <div id="error-state" class="table-state" hidden>
+                <p><strong>Could not load visitor data.</strong></p>
+                <p id="error-message"></p>
+                <button id="retry-btn" class="btn btn-secondary btn-sm" type="button">Retry</button>
+              </div>
+
+              <div class="pagination">
+                <span id="page-info">—</span>
+                <div class="pages">
+                  <button id="prev-page" class="btn btn-ghost btn-sm" type="button" disabled>← Previous</button>
+                  <button id="next-page" class="btn btn-ghost btn-sm" type="button" disabled>Next →</button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </section>
+
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="false"></div>
+
+    <script src="/assets/js/admin.js" defer></script>
+  </body>
+</html>

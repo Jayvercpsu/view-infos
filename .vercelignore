@@ -1,0 +1,14 @@
+# Keep the serverless function bundle small and free of secrets.
+tests/
+.pytest_cache/
+.venv/
+venv/
+env/
+.git/
+.env
+.env.*
+!.env.example
+*.md
+.vercel/
+__pycache__/
+*.pyc
